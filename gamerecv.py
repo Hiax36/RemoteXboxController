@@ -1,12 +1,8 @@
 import vgamepad as vg
-import time
 import socket
-import public_ip as ip
 import pickle
 import sys
 import traceback
-
-
 
 #server
 try:
