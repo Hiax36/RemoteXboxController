@@ -3,6 +3,7 @@ import socket
 import pickle
 import sys
 import traceback
+import pyautogui
 
 #server
 try:
@@ -55,5 +56,6 @@ try:
 except:
     traceback.print_exc()
     print("Error, connection closing...")
+    conn.close()
     s.close()
     sys.exit()
