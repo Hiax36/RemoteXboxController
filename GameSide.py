@@ -53,6 +53,15 @@ try:
                 else:
                     gamepad.release_button(item)
         gamepad.update()
+
+        img = pyautogui.screenshot()
+        pickledImg = bytearray(pickle.dumps(img))
+        while len(pickledImg) < 6400:
+            pickledImg.append(255)
+        pickledImg = bytes(pickledImg)
+        conn.send(pickledImg)
+
+        
 except:
     traceback.print_exc()
     print("Error, connection closing...")

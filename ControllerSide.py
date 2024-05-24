@@ -7,7 +7,14 @@ import traceback
 import sys
 import pygame
 import time
+import tkinter as tk
+
 try:
+    root = tk.Tk()
+    root.geometry(newGeometry="1920x1080")
+
+    imgLabel = tk.Label(root)
+
     pygame.init()
     PORT = 25565
     s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
@@ -94,13 +101,32 @@ try:
                         "righttrig" : controller.get_axis(2)
                     }
 
-                pickledData = pickle.dumps(controllerData)
-                print(pickledData)
-                pickledData = bytearray(pickledData)
-                while len(pickledData) < 512:
-                    pickledData.append(255)
-                pickledData = bytes(pickledData)
-                s.send(pickledData)
+        pickledData = pickle.dumps(controllerData)
+        print(pickledData)
+        pickledData = bytearray(pickledData)
+        while len(pickledData) < 512:
+            pickledData.append(255)
+        pickledData = bytes(pickledData)
+        s.send(pickledData)
+
+        data = s.recv(6400)
+        if data:
+            print(data)
+            print("data is length " + str(len(data)) + " bytes")
+            data = bytearray(data)
+            for i in range(len(data) - 1,0,-1):
+                if data[i] == 255:
+                    data = data[:i]
+                else:
+                    break
+            data = bytes(data)
+        img = pickle.loads(data)
+        imgLabel.configure(image=img)
+        root.update_idletasks()
+        root.update()
+
+            
+
 
 
 except:
